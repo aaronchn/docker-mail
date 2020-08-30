@@ -15,12 +15,10 @@ then
 fi
 
 dockerize \
-  -template /etc/postfix/mysql-email2email.cf.templ:/etc/postfix/mysql-email2email.cf \
-  -template /etc/postfix/mysql-virtual-alias-maps.cf.templ:/etc/postfix/mysql-virtual-alias-maps.cf \
-  -template /etc/postfix/mysql-virtual-mailbox-domains.cf.templ:/etc/postfix/mysql-virtual-mailbox-domains.cf \
-  -template /etc/postfix/mysql-virtual-mailbox-maps.cf.templ:/etc/postfix/mysql-virtual-mailbox-maps.cf \
-  -template /etc/postfix/mysql-recipient-access.cf.templ:/etc/postfix/mysql-recipient-access.cf \
-  -wait tcp://${MYSQL_HOST}:3306 \
+  -template /etc/postfix/ldap-domains.cf.templ:/etc/postfix/ldap-domains.cf \
+  -template /etc/postfix/ldap-users.cf.templ:/etc/postfix/ldap-user.cf \
+  -template /etc/postfix/ldap-groups.cf.templ:/etc/postfix/ldap-groups.cf \
+  -template /etc/postfix/ldap-aliases.cf.templ:/etc/postfix/ldap-aliases.cf \
   -wait tcp://${MDA_HOST}:2003 \
   -wait tcp://${RSPAMD_HOST}:11332 \
   -wait file://${SSL_CERT} \

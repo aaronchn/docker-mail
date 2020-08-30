@@ -10,11 +10,6 @@ LABEL de.ressourcenkonflikt.docker-mailserver.autoheal="true"
 
 ENV MAILNAME=mail.example.com \
     MYNETWORKS=127.0.0.0/8\ 10.0.0.0/8\ 172.16.0.0/12\ 192.168.0.0/16 \
-    MYSQL_HOST=db \
-    MYSQL_USER=root \
-    MYSQL_PASSWORD=changeme \
-    MYSQL_DATABASE=mailserver \
-    FILTER_MIME=false \
     RSPAMD_HOST=filter \
     MDA_HOST=mda \
     MTA_HOST=mta \
@@ -24,13 +19,12 @@ ENV MAILNAME=mail.example.com \
     WAITSTART_TIMEOUT=1m
 
 RUN apk --no-cache add \
-      postfix-mysql \
+      postfix-ldap \
       postfix \
       supervisor && \
-    postconf virtual_mailbox_domains=mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf && \
-    postconf virtual_mailbox_maps=mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf && \
-    postconf virtual_alias_maps=mysql:/etc/postfix/mysql-virtual-alias-maps.cf,mysql:/etc/postfix/mysql-email2email.cf && \
-    postconf smtpd_recipient_restrictions="check_recipient_access mysql:/etc/postfix/mysql-recipient-access.cf" && \
+    postconf virtual_mailbox_domains=ldap:/etc/postfix/ldap-domains.cf  && \
+    postconf virtual_mailbox_maps=ldap:/etc/postfix/ldap-users.cf  && \
+    postconf virtual_alias_maps=ldap:/etc/postfix/ldap-aliases.cf,ldap:/etc/postfix/ldap-groups.cf  && \
     postconf smtputf8_enable=no && \
     postconf smtpd_milters="inet:${RSPAMD_HOST}:11332" && \
     postconf non_smtpd_milters="inet:${RSPAMD_HOST}:11332" && \

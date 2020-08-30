@@ -1,0 +1,17 @@
+version = {{ .Env.LDAP_VERSION}}
+start_tls = {{ .Env.LDAP_START_TLS}}
+server_host = {{ .Env.LDAP_SERVER_HOST}}
+search_base = {{ .Env.LDAP_SEARCH_BASE}}
+bind = yes
+bind_dn = {{ .Env.LDAP_BIND_DN}}
+bind_pw = {{ .Env.LDAP_BIND_PW}}
+
+query_filter = (mail=%s)
+#query_filter = {{ .Env.LDAP_QUERY_FILTER_USER}}
+result_attribute = {{ .Env.LDAP_RESULT_USER_ATTRIBUTE}}
+
+# follows the DN references.
+special_result_attribute = {{ .Env.LDAP_SPECIAL_RESULT_USER_ATTRIBUTE}}
+
+# to excluding the group's mail address from search result.
+leaf_result_attribute = {{ .Env.LDAP_RESULT_USER_ATTRIBUTE}}
