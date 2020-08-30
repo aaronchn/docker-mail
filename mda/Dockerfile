@@ -8,11 +8,7 @@ LABEL maintainer="jeff@ressourcenkonflikt.de"
 LABEL vendor="https://github.com/jeboehm/docker-mailserver"
 LABEL de.ressourcenkonflikt.docker-mailserver.autoheal="true"
 
-ENV MYSQL_HOST=db \
-    MYSQL_USER=root \
-    MYSQL_PASSWORD=changeme \
-    MYSQL_DATABASE=mailserver \
-    MAILNAME=mail.example.com \
+ENV MAILNAME=mail.example.com \
     POSTMASTER=postmaster@example.com \
     SUBMISSION_HOST=mta \
     ENABLE_POP3=true \
@@ -25,7 +21,7 @@ RUN apk --no-cache add \
          curl \
          dovecot \
          dovecot-lmtpd \
-         dovecot-mysql \
+         dovecot-ldap \
          dovecot-pigeonhole-plugin \
          dovecot-pop3d \
          dovecot-submissiond && \

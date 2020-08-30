@@ -1,0 +1,21 @@
+uris = ldaps://{{ .Env.LDAP_SERVER_HOST}}
+
+#default_pass_scheme = SHA256-CRYPT
+default_pass_scheme = SSHA
+
+dn = {{ .Env.LDAP_BIND_DN}}
+dnpass = {{ .Env.LDAP_BIND_PW}}
+
+ldap_version = {{ .Env.LDAP_VERSION}}
+base = {{ .Env.LDAP_SEARCH_BASE}}
+
+# https://doc.dovecot.org/configuration_manual/authentication/user_databases_userdb/#user-database-userdb
+# Can use "mail" extra fields to overrides global setting "mail_location" in etc/dovecot/conf.d/10-mail.conf
+# Can use "home" fields to overrides global setting "mail_home" in etc/dovecot/conf.d/10-mail.conf
+# https://wiki2.dovecot.org/Quota/Configuration
+
+user_filter = (&(objectClass=PostfixBookMailAccount)(mailEnabled=TRUE)(uid=%n))
+user_attrs = mailUidNumber=uid,mailGidNumber=gid,mailStorageDirectory=mail,mailHomeDirectory=home,mailQuota=quota_rule=*:storage=%$
+
+pass_filter = (&(objectClass=PostfixBookMailAccount)(mailEnabled=TRUE)(uid=%n))
+pass_attrs  = uniqueIdentifier=user,userPassword=password
