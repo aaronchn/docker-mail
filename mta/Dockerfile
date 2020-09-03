@@ -25,6 +25,7 @@ RUN apk --no-cache add \
     postconf virtual_mailbox_domains=ldap:/etc/postfix/ldap-domains.cf  && \
     postconf virtual_mailbox_maps=ldap:/etc/postfix/ldap-users.cf  && \
     postconf virtual_alias_maps=ldap:/etc/postfix/ldap-aliases.cf,ldap:/etc/postfix/ldap-groups.cf  && \
+    postconf smtpd_recipient_restrictions="check_recipient_access ldap:/etc/postfix/ldap-recipient-access.cf" && \
     postconf smtputf8_enable=no && \
     postconf smtpd_milters="inet:${RSPAMD_HOST}:11332" && \
     postconf non_smtpd_milters="inet:${RSPAMD_HOST}:11332" && \
