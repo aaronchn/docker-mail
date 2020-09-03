@@ -24,6 +24,21 @@ else
     export CONTROLLER_PASSWORD_ENC=`rspamadm pw -e -p ${CONTROLLER_PASSWORD}`
 fi
 
+if [[ -f /media/dkim/dkim_selectors.map && -f /media/dkim/*.key ]]
+then
+    echo "DKIM found!"
+    echo "Current DKIM:"
+    tail -n +1 /media/dkim/*
+else
+    echo "DKIM is generating"
+    CURDATE=$(date +%Y%m%d%H%M)
+    touch /media/dkim/dkim_selectors.map
+    echo "${DOMAIN} ${CURDATE}" > /media/dkim/dkim_selectors.map
+    rspamadm dkim_keygen -d ${DOMAIN} -s ${CURDATE} -k /media/dkim/${DOMAIN}.${CURDATE}.key > /media/dkim/${DOMAIN}.${CURDATE}.pub
+    echo "DKIM has been generated."
+    tail -n +1 /media/dkim/*
+fi
+
 dockerize \
   -template /etc/rspamd/local.d/antivirus.conf.templ:/etc/rspamd/local.d/antivirus.conf \
   -template /etc/rspamd/local.d/worker-controller.inc.templ:/etc/rspamd/local.d/worker-controller.inc \

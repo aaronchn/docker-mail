@@ -31,7 +31,9 @@ RUN apk --no-cache add \
     wget -O /usr/share/rspamd/bayes.spam.sqlite https://rspamd.com/rspamd_statistics/bayes.spam.sqlite && \
     wget -O /usr/share/rspamd/bayes.ham.sqlite https://rspamd.com/rspamd_statistics/bayes.ham.sqlite && \
     apk --no-cache del \
-      openssl
+      openssl && \
+    mkdir /media/dkim && \
+    chown -R rspamd /media/dkim
 
 COPY --from=dockerize /usr/local/bin/dockerize /usr/local/bin
 COPY rootfs/ /
@@ -40,6 +42,7 @@ EXPOSE 11332 11334
 USER rspamd
 
 VOLUME ["/var/lib/rspamd"]
+VOLUME ["/media/dkim"]
 
 HEALTHCHECK CMD wget -O- -T 10 http://127.0.0.1:11334/stat
 CMD ["/usr/local/bin/entrypoint.sh"]
