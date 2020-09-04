@@ -6,8 +6,7 @@ bind = yes
 bind_dn = {{ .Env.LDAP_BIND_DN}}
 bind_pw = {{ .Env.LDAP_BIND_PW}}
 
-query_filter = (mail=%s)
-#query_filter = {{ .Env.LDAP_QUERY_FILTER_USER}}
+query_filter = {{ .Env.LDAP_QUERY_FILTER_USER}}
 result_attribute = {{ .Env.LDAP_RESULT_USER_ATTRIBUTE}}
 
 # follows the DN references.
